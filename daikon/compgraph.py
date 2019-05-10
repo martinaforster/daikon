@@ -6,7 +6,7 @@
 # Mathias Müller <mmueller@cl.uzh.ch>
 
 import tensorflow as tf
-
+import tensorflow.keras.backend as b
 from daikon import constants as C
 
 
@@ -37,6 +37,8 @@ def define_computation_graph(source_vocab_size: int, target_vocab_size: int, bat
 
         encoder_inputs_embedded = tf.nn.embedding_lookup(source_embedding, encoder_inputs)
         decoder_inputs_embedded = tf.nn.embedding_lookup(target_embedding, decoder_inputs)
+        #reverse input sequence
+        encoder_inputs_embedded = b.reverse(encoder_inputs_embedded, axes=0)
 
     with tf.variable_scope("Encoder"):
         encoder_cell = tf.contrib.rnn.LSTMCell(C.HIDDEN_SIZE)
